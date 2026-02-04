@@ -1,169 +1,239 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Be My Valentine 💖</title>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Be My Valentine 💖</title>
 
-    <!-- Confetti -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-    <style>
-      * {
-        box-sizing: border-box;
-        font-family: "Poppins", "Comic Sans MS", sans-serif;
-      }
+<style>
+* {
+  box-sizing: border-box;
+  font-family: "Poppins", "Comic Sans MS", sans-serif;
+}
 
-      body {
-        margin: 0;
-        min-height: 100vh;
-        background: linear-gradient(135deg, #ffd6e8, #ffeef5);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 40px;
-      }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ffd6e8, #ffeef5, #ffd6e8);
+  background-size: 300% 300%;
+  animation: gradientShift 8s ease infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  overflow: hidden;
+}
 
-      .card {
-        background: white;
-        width: 520px;
-        min-height: 360px;
-        padding: 60px 50px;
-        border-radius: 36px;
-        text-align: center;
-        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.18);
-        position: relative;
-      }
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
-      .emoji {
-        font-size: 80px;
-        margin-bottom: 24px;
-      }
+.card {
+  background: white;
+  width: 520px;
+  min-height: 360px;
+  padding: 60px 50px;
+  border-radius: 36px;
+  text-align: center;
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.18);
+  position: relative;
+  z-index: 2;
+}
 
-      h1 {
-        font-size: 24px;
-        margin-bottom: 50px;
-      }
+.emoji {
+  font-size: 80px;
+  margin-bottom: 24px;
+}
 
-      .buttons {
-        display: flex;
-        justify-content: center;
-        gap: 24px;
-        position: relative;
-      }
+h1 {
+  font-size: 24px;
+  margin-bottom: 50px;
+}
 
-      button {
-        border: none;
-        padding: 16px 30px;
-        border-radius: 999px;
-        font-size: 17px;
-        cursor: pointer;
-        transition: transform 0.2s ease;
-        white-space: nowrap;
-      }
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  position: relative;
+}
 
-      #yesBtn {
-        background: #ff4d88;
-        color: white;
-        z-index: 2;
-      }
+button {
+  border: none;
+  padding: 16px 30px;
+  border-radius: 999px;
+  font-size: 17px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.2s ease;
+}
 
-      #yesBtn:hover {
-        transform: scale(1.1);
-      }
+#yesBtn {
+  background: #ff4d88;
+  color: white;
+  z-index: 2;
+  animation: pulse 1.8s infinite;
+}
 
-      #noBtn {
-        background: #ccc;
-        color: #555;
-        pointer-events: none; /* NEVER CLICKABLE */
-      }
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255,77,136,0.4); }
+  70% { box-shadow: 0 0 0 18px rgba(255,77,136,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,77,136,0); }
+}
 
-      .note {
-        margin-top: 22px;
-        font-size: 14px;
-        color: #999;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="card" id="card">
-      <div class="emoji">🐣💗</div>
-      <h1>Marisol, will you be my Valentine?</h1>
+#yesBtn:hover {
+  transform: scale(1.1);
+}
 
-      <div class="buttons" id="buttons">
-        <button id="yesBtn">Yes 💖</button>
-        <button id="noBtn">No 🙃</button>
-      </div>
+#noBtn {
+  background: #ccc;
+  color: #555;
+  pointer-events: none;
+}
 
-      <div class="note">*No is not an option 😈*</div>
-    </div>
+.note {
+  margin-top: 22px;
+  font-size: 14px;
+  color: #999;
+}
 
-    <script>
-      const noBtn = document.getElementById("noBtn");
-      const yesBtn = document.getElementById("yesBtn");
+/* Floating Hearts */
+.floating-heart {
+  position: fixed;
+  bottom: -40px;
+  font-size: 22px;
+  animation: floatUp linear forwards;
+  pointer-events: none;
+  opacity: 0.85;
+}
 
-      let escaped = false;
-      let initialRect = null;
+@keyframes floatUp {
+  to {
+    transform: translateY(-110vh);
+    opacity: 0;
+  }
+}
 
-      function escapeNoButton() {
-        if (!escaped) {
-          // LOCK INITIAL POSITION (INSIDE CARD)
-          initialRect = noBtn.getBoundingClientRect();
+/* Sparkles */
+.sparkle {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: #ff4d88;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: sparkleFade 0.6s forwards;
+}
 
-          noBtn.style.position = "fixed";
-          noBtn.style.left = initialRect.left + "px";
-          noBtn.style.top = initialRect.top + "px";
+@keyframes sparkleFade {
+  to {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
+</style>
+</head>
 
-          escaped = true;
-        }
+<body>
 
-        const padding = 20;
-        const yesRect = yesBtn.getBoundingClientRect();
-        const noRect = noBtn.getBoundingClientRect();
+<div class="card" id="card">
+  <div class="emoji">🐣💗</div>
+  <h1>Will you be my Valentine?</h1>
 
-        let x, y, safe;
+  <div class="buttons">
+    <button id="yesBtn">Yes 💖</button>
+    <button id="noBtn">No 🙃</button>
+  </div>
 
-        do {
-          x = Math.random() * (window.innerWidth - noRect.width - padding);
-          y = Math.random() * (window.innerHeight - noRect.height - padding);
+  <div class="note">*No is not an option 😈*</div>
+</div>
 
-          safe =
-            x + noRect.width < yesRect.left ||
-            x > yesRect.right ||
-            y + noRect.height < yesRect.top ||
-            y > yesRect.bottom;
-        } while (!safe);
+<script>
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
 
-        noBtn.style.left = `${x}px`;
-        noBtn.style.top = `${y}px`;
-      }
+let escaped = false;
+let initialRect = null;
 
-      // Desktop: flee when cursor is near
-      document.addEventListener("mousemove", (e) => {
-        const rect = noBtn.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2;
-        const cy = rect.top + rect.height / 2;
+/* Floating hearts generator */
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.className = "floating-heart";
+  heart.textContent = Math.random() > 0.5 ? "💖" : "💕";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (4 + Math.random() * 4) + "s";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 8000);
+}
+setInterval(createHeart, 500);
 
-        const distance = Math.hypot(e.clientX - cx, e.clientY - cy);
-        if (distance < 130) escapeNoButton();
-      });
+/* Sparkle trail */
+document.addEventListener("mousemove", (e) => {
+  const sparkle = document.createElement("div");
+  sparkle.className = "sparkle";
+  sparkle.style.left = e.clientX + "px";
+  sparkle.style.top = e.clientY + "px";
+  document.body.appendChild(sparkle);
+  setTimeout(() => sparkle.remove(), 600);
+});
 
-      // Mobile: flee on touch
-      document.addEventListener("touchstart", escapeNoButton);
+/* No button logic (UNCHANGED behavior) */
+function escapeNoButton() {
+  if (!escaped) {
+    initialRect = noBtn.getBoundingClientRect();
+    noBtn.style.position = "fixed";
+    noBtn.style.left = initialRect.left + "px";
+    noBtn.style.top = initialRect.top + "px";
+    escaped = true;
+  }
 
-      // YES = HEART ATTACK
-      yesBtn.addEventListener("click", () => {
-        const end = Date.now() + 3500;
+  const padding = 20;
+  const yesRect = yesBtn.getBoundingClientRect();
+  const noRect = noBtn.getBoundingClientRect();
 
-        (function frame() {
-          confetti({
-            particleCount: 12,
-            spread: 90,
-            colors: ["#ff4d88", "#ff99bb", "#ffccd9"],
-          });
-          if (Date.now() < end) requestAnimationFrame(frame);
-        })();
-      });
-    </script>
-  </body>
+  let x, y, safe;
+
+  do {
+    x = Math.random() * (window.innerWidth - noRect.width - padding);
+    y = Math.random() * (window.innerHeight - noRect.height - padding);
+
+    safe =
+      x + noRect.width < yesRect.left ||
+      x > yesRect.right ||
+      y + noRect.height < yesRect.top ||
+      y > yesRect.bottom;
+  } while (!safe);
+
+  noBtn.style.left = `${x}px`;
+  noBtn.style.top = `${y}px`;
+}
+
+document.addEventListener("mousemove", (e) => {
+  const rect = noBtn.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+  const distance = Math.hypot(e.clientX - cx, e.clientY - cy);
+  if (distance < 130) escapeNoButton();
+});
+
+document.addEventListener("touchstart", escapeNoButton);
+
+/* YES confetti */
+yesBtn.addEventListener("click", () => {
+  const end = Date.now() + 3000;
+  (function frame() {
+    confetti({
+      particleCount: 12,
+      spread: 90,
+      colors: ["#ff4d88", "#ff99bb", "#ffccd9"],
+    });
+    if (Date.now() < end) requestAnimationFrame(frame);
+  })();
+});
+</script>
+
+</body>
 </html>
