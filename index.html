@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Be My Valentine? 💖</title>
+<title>Be My Valentine 💖</title>
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
@@ -16,20 +16,12 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: linear-gradient(135deg, #ffd6e8, #ffeef5, #ffd6e8);
-  background-size: 300% 300%;
-  animation: gradientShift 8s ease infinite;
+  background: linear-gradient(135deg, #ffd6e8, #ffeef5);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 40px;
   overflow: hidden;
-}
-
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
 }
 
 .card {
@@ -41,17 +33,19 @@ body {
   text-align: center;
   box-shadow: 0 40px 80px rgba(0, 0, 0, 0.18);
   position: relative;
-  z-index: 2;
+  transition: all 0.4s ease;
 }
 
 .emoji {
   font-size: 80px;
   margin-bottom: 24px;
+  animation: float 3s ease-in-out infinite;
 }
 
 h1 {
   font-size: 24px;
   margin-bottom: 50px;
+  transition: opacity 0.3s ease;
 }
 
 .buttons {
@@ -67,21 +61,14 @@ button {
   border-radius: 999px;
   font-size: 17px;
   cursor: pointer;
-  white-space: nowrap;
   transition: transform 0.2s ease;
+  white-space: nowrap;
 }
 
 #yesBtn {
   background: #ff4d88;
   color: white;
-  z-index: 2;
-  animation: pulse 1.8s infinite;
-}
-
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(255,77,136,0.4); }
-  70% { box-shadow: 0 0 0 18px rgba(255,77,136,0); }
-  100% { box-shadow: 0 0 0 0 rgba(255,77,136,0); }
+  box-shadow: 0 10px 25px rgba(255, 77, 136, 0.4);
 }
 
 #yesBtn:hover {
@@ -100,39 +87,18 @@ button {
   color: #999;
 }
 
-/* Floating Hearts */
-.floating-heart {
-  position: fixed;
-  bottom: -40px;
-  font-size: 22px;
-  animation: floatUp linear forwards;
-  pointer-events: none;
-  opacity: 0.85;
+.celebration {
+  animation: popIn 0.6s ease forwards;
 }
 
-@keyframes floatUp {
-  to {
-    transform: translateY(-110vh);
-    opacity: 0;
-  }
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
 }
 
-/* Sparkles */
-.sparkle {
-  position: fixed;
-  width: 8px;
-  height: 8px;
-  background: #ff4d88;
-  border-radius: 50%;
-  pointer-events: none;
-  animation: sparkleFade 0.6s forwards;
-}
-
-@keyframes sparkleFade {
-  to {
-    opacity: 0;
-    transform: scale(2);
-  }
+@keyframes popIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
 }
 </style>
 </head>
@@ -140,75 +106,63 @@ button {
 <body>
 
 <div class="card" id="card">
-  <div class="emoji">🐣💗</div>
-  <h1>Marisol, will you be my Valentine?</h1>
+  <div class="emoji" id="emoji">🐣💗</div>
+  <h1 id="mainText">Will you be my Valentine?</h1>
 
   <div class="buttons">
     <button id="yesBtn">Yes 💖</button>
-    <button id="noBtn">No 😞</button>
+    <button id="noBtn">No 🙃</button>
   </div>
 
-  <div class="note">*Choose wisely... 🤓*</div>
+  <div class="note">*No is not an option 😈*</div>
 </div>
 
 <script>
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
+const mainText = document.getElementById("mainText");
+const card = document.getElementById("card");
+const emoji = document.getElementById("emoji");
 
 let escaped = false;
-let initialRect = null;
+let moveCount = 0;
 
-/* Floating hearts generator */
-function createHeart() {
-  const heart = document.createElement("div");
-  heart.className = "floating-heart";
-  heart.textContent = Math.random() > 0.5 ? "💖" : "💕";
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.animationDuration = (4 + Math.random() * 4) + "s";
-  document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 8000);
-}
-setInterval(createHeart, 500);
+const messages = [
+  "Are you sure? 🥺",
+  "Pretty please? 💕",
+  "I won't give up! 😤",
+  "That button is shy 😜",
+  "Just say YES already 💘"
+];
 
-/* Sparkle trail */
-document.addEventListener("mousemove", (e) => {
-  const sparkle = document.createElement("div");
-  sparkle.className = "sparkle";
-  sparkle.style.left = e.clientX + "px";
-  sparkle.style.top = e.clientY + "px";
-  document.body.appendChild(sparkle);
-  setTimeout(() => sparkle.remove(), 600);
-});
-
-/* No button logic (UNCHANGED behavior) */
 function escapeNoButton() {
   if (!escaped) {
-    initialRect = noBtn.getBoundingClientRect();
+    const rect = noBtn.getBoundingClientRect();
     noBtn.style.position = "fixed";
-    noBtn.style.left = initialRect.left + "px";
-    noBtn.style.top = initialRect.top + "px";
+    noBtn.style.left = rect.left + "px";
+    noBtn.style.top = rect.top + "px";
     escaped = true;
   }
 
   const padding = 20;
-  const yesRect = yesBtn.getBoundingClientRect();
   const noRect = noBtn.getBoundingClientRect();
 
-  let x, y, safe;
-
-  do {
-    x = Math.random() * (window.innerWidth - noRect.width - padding);
-    y = Math.random() * (window.innerHeight - noRect.height - padding);
-
-    safe =
-      x + noRect.width < yesRect.left ||
-      x > yesRect.right ||
-      y + noRect.height < yesRect.top ||
-      y > yesRect.bottom;
-  } while (!safe);
+  const x = Math.random() * (window.innerWidth - noRect.width - padding);
+  const y = Math.random() * (window.innerHeight - noRect.height - padding);
 
   noBtn.style.left = `${x}px`;
   noBtn.style.top = `${y}px`;
+
+  moveCount++;
+
+  // Only change text when it actually moves
+  if (moveCount <= messages.length) {
+    mainText.style.opacity = 0;
+    setTimeout(() => {
+      mainText.textContent = messages[moveCount - 1];
+      mainText.style.opacity = 1;
+    }, 200);
+  }
 }
 
 document.addEventListener("mousemove", (e) => {
@@ -216,22 +170,39 @@ document.addEventListener("mousemove", (e) => {
   const cx = rect.left + rect.width / 2;
   const cy = rect.top + rect.height / 2;
   const distance = Math.hypot(e.clientX - cx, e.clientY - cy);
+
   if (distance < 130) escapeNoButton();
 });
 
 document.addEventListener("touchstart", escapeNoButton);
 
-/* YES confetti */
-yesBtn.addEventListener("click", () => {
-  const end = Date.now() + 3000;
-  (function frame() {
-    confetti({
-      particleCount: 12,
-      spread: 90,
-      colors: ["#ff4d88", "#ff99bb", "#ffccd9"],
-    });
-    if (Date.now() < end) requestAnimationFrame(frame);
-  })();
+yesBtn.addEventListener("click", (e) => {
+
+  // Confetti burst from button
+  const rect = yesBtn.getBoundingClientRect();
+  const x = (rect.left + rect.width / 2) / window.innerWidth;
+  const y = (rect.top + rect.height / 2) / window.innerHeight;
+
+  confetti({
+    particleCount: 120,
+    spread: 90,
+    origin: { x, y }
+  });
+
+  // Remove buttons
+  yesBtn.style.display = "none";
+  noBtn.style.display = "none";
+
+  // Celebration message inside same card
+  setTimeout(() => {
+    card.classList.add("celebration");
+    emoji.textContent = "💖✨";
+    mainText.innerHTML = `
+      YAY! 💘 <br><br>
+      I knew you'd say yes! <br>
+      You just made me the happiest person ever 💕
+    `;
+  }, 300);
 });
 </script>
 
