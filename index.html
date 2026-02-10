@@ -1,349 +1,369 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Be My Valentine 💖</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Be My Valentine 💖</title>
 
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-<style>
-* { box-sizing: border-box; font-family: "Poppins", "Comic Sans MS", sans-serif; }
+  <style>
+    * { box-sizing: border-box; font-family: "Poppins", "Comic Sans MS", sans-serif; }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #ffd6e8, #ffeef5, #ffd6e8);
-  background-size: 300% 300%;
-  animation: gradientShift 10s ease infinite;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px;
-  overflow: hidden;
-}
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ffd6e8, #ffeef5, #ffd6e8);
+      background-size: 300% 300%;
+      animation: gradientShift 10s ease infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      overflow: hidden;
+    }
 
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-.card {
-  background: white;
-  width: 520px;
-  min-height: 360px;
-  padding: 60px 50px;
-  border-radius: 36px;
-  text-align: center;
-  box-shadow: 0 40px 80px rgba(0,0,0,0.18);
-  position: relative;
-  z-index: 2;
-  transition: all 0.4s ease;
-}
+    .card {
+      background: white;
+      width: 520px;
+      min-height: 360px;
+      padding: 60px 50px;
+      border-radius: 36px;
+      text-align: center;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.18);
+      position: relative;
+      z-index: 2;
+      transition: all 0.4s ease;
+    }
 
-.emoji {
-  font-size: 80px;
-  margin-bottom: 24px;
-  animation: float 3s ease-in-out infinite;
-}
+    .emoji {
+      font-size: 80px;
+      margin-bottom: 24px;
+      animation: float 3s ease-in-out infinite;
+    }
 
-@keyframes float {
-  0%,100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-}
+    @keyframes float {
+      0%,100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
 
-h1 {
-  font-size: 24px;
-  margin-bottom: 50px;
-  transition: opacity 0.25s ease;
-}
+    h1 {
+      font-size: 24px;
+      margin-bottom: 50px;
+      transition: opacity 0.25s ease;
+    }
 
-.buttons {
-  display: flex;
-  justify-content: center;
-  gap: 24px;
-  position: relative;
-}
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      position: relative;
+    }
 
-button {
-  border: none;
-  padding: 16px 30px;
-  border-radius: 999px;
-  font-size: 17px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: transform 0.2s ease;
-}
+    button {
+      border: none;
+      padding: 16px 30px;
+      border-radius: 999px;
+      font-size: 17px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: transform 0.2s ease;
+    }
 
-#yesBtn {
-  background: #ff4d88;
-  color: white;
-  box-shadow: 0 10px 25px rgba(255,77,136,0.4);
-  animation: pulse 1.8s infinite;
-}
+    #yesBtn {
+      background: #ff4d88;
+      color: white;
+      box-shadow: 0 10px 25px rgba(255,77,136,0.4);
+      animation: pulse 1.8s infinite;
+    }
 
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(255,77,136,0.35); }
-  70% { box-shadow: 0 0 0 18px rgba(255,77,136,0); }
-  100% { box-shadow: 0 0 0 0 rgba(255,77,136,0); }
-}
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(255,77,136,0.35); }
+      70% { box-shadow: 0 0 0 18px rgba(255,77,136,0); }
+      100% { box-shadow: 0 0 0 0 rgba(255,77,136,0); }
+    }
 
-#yesBtn:hover { transform: scale(1.1); }
+    #yesBtn:hover { transform: scale(1.1); }
 
-#noBtn {
-  background: #ccc;
-  color: #555;
-  pointer-events: none;
-}
+    #noBtn {
+      background: #ccc;
+      color: #555;
+      pointer-events: none;
+    }
 
-.note {
-  margin-top: 22px;
-  font-size: 14px;
-  color: #999;
-}
+    .note {
+      margin-top: 22px;
+      font-size: 14px;
+      color: #999;
+    }
 
-.celebration {
-  animation: popIn 0.6s ease forwards;
-}
+    .celebration {
+      animation: popIn 0.6s ease forwards;
+    }
 
-@keyframes popIn {
-  0% { transform: scale(0.9); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
-}
+    @keyframes popIn {
+      0% { transform: scale(0.9); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
 
-/* Floating hearts going up */
-.floating-heart {
-  position: fixed;
-  bottom: -50px;
-  animation: floatUp linear forwards;
-  pointer-events: none;
-  opacity: 0.9;
-  z-index: 1;
-  filter: drop-shadow(0 8px 10px rgba(0,0,0,0.12));
-}
+    /* Floating hearts going up */
+    .floating-heart {
+      position: fixed;
+      bottom: -50px;
+      animation: floatUp linear forwards;
+      pointer-events: none;
+      opacity: 0.9;
+      z-index: 1;
+      filter: drop-shadow(0 8px 10px rgba(0,0,0,0.12));
+    }
 
-@keyframes floatUp {
-  to {
-    transform: translateY(-120vh) rotate(12deg);
-    opacity: 0;
-  }
-}
+    @keyframes floatUp {
+      to {
+        transform: translateY(-120vh) rotate(12deg);
+        opacity: 0;
+      }
+    }
 
-/* Cursor sparkle trail */
-.sparkle {
-  position: fixed;
-  width: 8px;
-  height: 8px;
-  background: #ff4d88;
-  border-radius: 50%;
-  pointer-events: none;
-  animation: sparkleFade 0.6s forwards;
-  z-index: 1;
-}
+    /* Cursor sparkle trail */
+    .sparkle {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: #ff4d88;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: sparkleFade 0.6s forwards;
+      z-index: 1;
+    }
 
-@keyframes sparkleFade {
-  to { opacity: 0; transform: scale(2); }
-}
+    @keyframes sparkleFade {
+      to { opacity: 0; transform: scale(2); }
+    }
 
-/* --- Pocoyo side video (sleek, not in the way) --- */
-.side-video {
-  position: fixed;
-  right: 28px;
-  bottom: 28px;
-  width: 220px;
-  border-radius: 18px;
-  box-shadow: 0 22px 50px rgba(0,0,0,0.25);
-  opacity: 0;
-  transform: translateY(18px);
-  transition: all 0.55s ease;
-  z-index: 3;
-  overflow: hidden;
-}
+    /* Side videos (left + right) */
+    .side-video {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 220px;
+      border-radius: 18px;
+      box-shadow: 0 22px 50px rgba(0,0,0,0.25);
+      opacity: 0;
+      transition: opacity 0.55s ease, transform 0.55s ease;
+      z-index: 3;
+      overflow: hidden;
+      background: #000;
+    }
 
-.side-video.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-</style>
+    .side-video.right { right: 40px; }
+    .side-video.left  { left: 40px; }
+
+    .side-video.show {
+      opacity: 1;
+      transform: translateY(-50%);
+    }
+
+    /* Keep it nice on small screens */
+    @media (max-width: 980px) {
+      .side-video { display: none; }
+    }
+  </style>
 </head>
 
 <body>
-<div class="card" id="card">
-  <div class="emoji" id="emoji">🐣💗</div>
-  <h1 id="mainText">Madisyn, will you be my valentine?</h1>
+  <div class="card" id="card">
+    <div class="emoji" id="emoji">🐣💗</div>
+    <h1 id="mainText">Madisyn, will you be my valentine?</h1>
 
-  <div class="buttons">
-    <button id="yesBtn">Yes 💖</button>
-    <button id="noBtn">No 😞</button>
+    <div class="buttons">
+      <button id="yesBtn">Yes 💖</button>
+      <button id="noBtn">No 😞</button>
+    </div>
+
+    <div class="note" id="note">Choose wisely... 🤓</div>
   </div>
 
-  <div class="note" id="note">Choose wisely... 🤓</div>
-</div>
+  <!-- Left & Right videos (update src if you want different ones) -->
+  <video id="leftVideo" class="side-video left" src="pocoyo.mp4" loop muted playsinline></video>
+  <video id="rightVideo" class="side-video right" src="pocoyo.mp4" loop muted playsinline></video>
 
-<!-- Pocoyo (files must be in SAME folder as index.html) -->
-<video id="pocoyoVideo" class="side-video" src="pocoyo.mp4" loop muted playsinline></video>
-<audio id="pocoyoAudio" src="pocoyo.mp3"></audio>
+  <!-- Audio -->
+  <audio id="pocoyoAudio" src="pocoyo.mp3"></audio>
 
-<script>
-const noBtn = document.getElementById("noBtn");
-const yesBtn = document.getElementById("yesBtn");
-const mainText = document.getElementById("mainText");
-const card = document.getElementById("card");
-const emoji = document.getElementById("emoji");
-const note = document.getElementById("note");
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const mainText = document.getElementById("mainText");
+    const card = document.getElementById("card");
+    const emoji = document.getElementById("emoji");
+    const note = document.getElementById("note");
 
-const pocoyoVideo = document.getElementById("pocoyoVideo");
-const pocoyoAudio = document.getElementById("pocoyoAudio");
+    const leftVideo = document.getElementById("leftVideo");
+    const rightVideo = document.getElementById("rightVideo");
+    const pocoyoAudio = document.getElementById("pocoyoAudio");
 
-let escaped = false;
-let moveCount = 0;
-let celebrateRainRunning = false;
+    let escaped = false;
+    let moveCount = 0;
+    let celebrateRainRunning = false;
 
-const messages = [
-  "Are you sure? 🥺",
-  "Pretty please? 💕",
-  "I won't give up! 😤",
-  "That button is shy. 😜",
-  "Just say YES already! 💘"
-];
+    const messages = [
+      "Are you sure? 🥺",
+      "Pretty please? 💕",
+      "I won't give up! 😤",
+      "That button is shy. 😜",
+      "Just say YES already! 💘"
+    ];
 
-/* ---- MORE FLOATING HEARTS (but still light) ---- */
-const heartEmojis = ["💖","💕","💗","💘","❤️","🥰"];
-function spawnHeart() {
-  const heart = document.createElement("div");
-  heart.className = "floating-heart";
-  heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+    /* ---- MORE FLOATING HEARTS (but still light) ---- */
+    const heartEmojis = ["💖","💕","💗","💘","❤️","🥰"];
+    function spawnHeart() {
+      const heart = document.createElement("div");
+      heart.className = "floating-heart";
+      heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
 
-  heart.style.left = (-5 + Math.random() * 110) + "vw";
-  const size = 14 + Math.random() * 26;
-  heart.style.fontSize = size + "px";
-  heart.style.animationDuration = (3.5 + Math.random() * 5.5) + "s";
+      heart.style.left = (-5 + Math.random() * 110) + "vw";
 
-  const drift = (-30 + Math.random() * 60);
-  heart.style.transform = `translateX(${drift}px)`;
+      const size = 14 + Math.random() * 26;
+      heart.style.fontSize = size + "px";
 
-  document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 11000);
-}
+      heart.style.animationDuration = (3.5 + Math.random() * 5.5) + "s";
 
-setInterval(() => {
-  spawnHeart();
-  if (Math.random() < 0.35) spawnHeart();
-}, 260);
+      const drift = (-30 + Math.random() * 60);
+      heart.style.transform = `translateX(${drift}px)`;
 
-/* ---- Sparkle trail ---- */
-document.addEventListener("mousemove", (e) => {
-  if (Math.random() > 0.55) return;
-  const sparkle = document.createElement("div");
-  sparkle.className = "sparkle";
-  sparkle.style.left = e.clientX + "px";
-  sparkle.style.top = e.clientY + "px";
-  document.body.appendChild(sparkle);
-  setTimeout(() => sparkle.remove(), 600);
-});
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 11000);
+    }
 
-/* ---- No button escape + message changes ONLY when it moves ---- */
-function escapeNoButton() {
-  if (!escaped) {
-    const rect = noBtn.getBoundingClientRect();
-    noBtn.style.position = "fixed";
-    noBtn.style.left = rect.left + "px";
-    noBtn.style.top = rect.top + "px";
-    escaped = true;
-  }
+    setInterval(() => {
+      spawnHeart();
+      if (Math.random() < 0.35) spawnHeart();
+    }, 260);
 
-  const padding = 20;
-  const noRect = noBtn.getBoundingClientRect();
-
-  const x = Math.random() * (window.innerWidth - noRect.width - padding);
-  const y = Math.random() * (window.innerHeight - noRect.height - padding);
-
-  noBtn.style.left = `${x}px`;
-  noBtn.style.top = `${y}px`;
-
-  moveCount++;
-  if (moveCount <= messages.length) {
-    mainText.style.opacity = 0;
-    setTimeout(() => {
-      mainText.textContent = messages[moveCount - 1];
-      mainText.style.opacity = 1;
-    }, 180);
-  }
-}
-
-document.addEventListener("mousemove", (e) => {
-  const rect = noBtn.getBoundingClientRect();
-  const cx = rect.left + rect.width / 2;
-  const cy = rect.top + rect.height / 2;
-  const distance = Math.hypot(e.clientX - cx, e.clientY - cy);
-  if (distance < 130) escapeNoButton();
-});
-
-document.addEventListener("touchstart", escapeNoButton);
-
-/* ---- Extra “confetti rain” after YES (subtle, timed) ---- */
-function confettiRain(ms = 3200) {
-  if (celebrateRainRunning) return;
-  celebrateRainRunning = true;
-
-  const end = Date.now() + ms;
-
-  (function frame() {
-    confetti({
-      particleCount: 3,
-      spread: 70,
-      startVelocity: 0,
-      gravity: 0.9,
-      ticks: 240,
-      origin: { x: Math.random(), y: -0.1 }
+    /* ---- Sparkle trail ---- */
+    document.addEventListener("mousemove", (e) => {
+      if (Math.random() > 0.55) return;
+      const sparkle = document.createElement("div");
+      sparkle.className = "sparkle";
+      sparkle.style.left = e.clientX + "px";
+      sparkle.style.top = e.clientY + "px";
+      document.body.appendChild(sparkle);
+      setTimeout(() => sparkle.remove(), 600);
     });
 
-    if (Date.now() < end) requestAnimationFrame(frame);
-    else celebrateRainRunning = false;
-  })();
-}
+    /* ---- No button escape + message changes ONLY when it moves ---- */
+    function escapeNoButton() {
+      if (!escaped) {
+        const rect = noBtn.getBoundingClientRect();
+        noBtn.style.position = "fixed";
+        noBtn.style.left = rect.left + "px";
+        noBtn.style.top = rect.top + "px";
+        escaped = true;
+      }
 
-/* ---- Yes click: burst from button + rain + card message + Pocoyo ---- */
-yesBtn.addEventListener("click", async () => {
-  const rect = yesBtn.getBoundingClientRect();
-  const x = (rect.left + rect.width / 2) / window.innerWidth;
-  const y = (rect.top + rect.height / 2) / window.innerHeight;
+      const padding = 20;
+      const noRect = noBtn.getBoundingClientRect();
 
-  // Burst from the button
-  confetti({
-    particleCount: 140,
-    spread: 85,
-    origin: { x, y }
-  });
+      const x = Math.random() * (window.innerWidth - noRect.width - padding);
+      const y = Math.random() * (window.innerHeight - noRect.height - padding);
 
-  // Light confetti rain after the burst
-  setTimeout(() => confettiRain(3200), 150);
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
 
-  yesBtn.style.display = "none";
-  noBtn.style.display = "none";
-  note.style.display = "none";
+      moveCount++;
+      if (moveCount <= messages.length) {
+        mainText.style.opacity = 0;
+        setTimeout(() => {
+          mainText.textContent = messages[moveCount - 1];
+          mainText.style.opacity = 1;
+        }, 180);
+      }
+    }
 
-  setTimeout(() => {
-    card.classList.add("celebration");
-    emoji.textContent = "💖✨";
-    mainText.innerHTML = `
-      YAY! 💘 <br><br>
-      I knew you'd say yes! 😌 <br>
-      You just make me the happiest! 🥰 <br><br>
-      See you on the 14th 😘
-    `;
-  }, 300);
+    document.addEventListener("mousemove", (e) => {
+      const rect = noBtn.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const distance = Math.hypot(e.clientX - cx, e.clientY - cy);
+      if (distance < 130) escapeNoButton();
+    });
 
-  // Show Pocoyo on the side (sleek)
-  setTimeout(() => {
-    pocoyoVideo.classList.add("show");
-    // Try to play video (muted autoplay is usually allowed)
-    pocoyoVideo.play().catch(() => {});
-    // Audio usually requires user gesture — this click counts, so it should work
-    pocoyoAudio.play().catch(() => {});
-  }, 650);
-});
-</script>
+    document.addEventListener("touchstart", escapeNoButton);
+
+    /* ---- Confetti “rain” after YES (subtle, timed) ---- */
+    function confettiRain(ms = 3200) {
+      if (celebrateRainRunning) return;
+      celebrateRainRunning = true;
+
+      const end = Date.now() + ms;
+
+      (function frame() {
+        confetti({
+          particleCount: 3,
+          spread: 70,
+          startVelocity: 0,
+          gravity: 0.9,
+          ticks: 240,
+          origin: { x: Math.random(), y: -0.1 }
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        } else {
+          celebrateRainRunning = false;
+        }
+      })();
+    }
+
+    /* ---- YES click: confetti from button + rain + card message + side videos + audio ---- */
+    yesBtn.addEventListener("click", async () => {
+      const rect = yesBtn.getBoundingClientRect();
+      const x = (rect.left + rect.width / 2) / window.innerWidth;
+      const y = (rect.top + rect.height / 2) / window.innerHeight;
+
+      // Burst from the button
+      confetti({
+        particleCount: 140,
+        spread: 85,
+        origin: { x, y }
+      });
+
+      // Light confetti rain after the burst
+      setTimeout(() => confettiRain(3200), 150);
+
+      // Hide buttons + note
+      yesBtn.style.display = "none";
+      noBtn.style.display = "none";
+      note.style.display = "none";
+
+      // Show side videos (fade in) and play
+      leftVideo.classList.add("show");
+      rightVideo.classList.add("show");
+      leftVideo.play().catch(()=>{});
+      rightVideo.play().catch(()=>{});
+
+      // Play audio (may require click — this click counts)
+      pocoyoAudio.currentTime = 0;
+      pocoyoAudio.play().catch(()=>{});
+
+      // Update card message
+      setTimeout(() => {
+        card.classList.add("celebration");
+        emoji.textContent = "💖✨";
+        mainText.innerHTML = `
+          YAY! 💘 <br><br>
+          I knew you'd say yes! 😌 <br>
+          You just make me the happiest! 🥰 <br><br>
+          See you on the 14th 😘
+        `;
+      }, 300);
+    });
+  </script>
 </body>
 </html>
