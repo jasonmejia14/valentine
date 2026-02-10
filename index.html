@@ -112,7 +112,6 @@
       100% { transform: scale(1); opacity: 1; }
     }
 
-    /* Floating hearts going up */
     .floating-heart {
       position: fixed;
       bottom: -50px;
@@ -130,7 +129,6 @@
       }
     }
 
-    /* Cursor sparkle trail */
     .sparkle {
       position: fixed;
       width: 8px;
@@ -146,7 +144,6 @@
       to { opacity: 0; transform: scale(2); }
     }
 
-    /* Side videos (left + right) */
     .side-video {
       position: fixed;
       top: 50%;
@@ -169,7 +166,6 @@
       transform: translateY(-50%);
     }
 
-    /* Keep it nice on small screens */
     @media (max-width: 980px) {
       .side-video { display: none; }
     }
@@ -189,11 +185,9 @@
     <div class="note" id="note">Choose wisely... 🤓</div>
   </div>
 
-  <!-- Left & Right videos (update src if you want different ones) -->
   <video id="leftVideo" class="side-video left" src="pocoyo.mp4" loop muted playsinline></video>
   <video id="rightVideo" class="side-video right" src="pocoyo.mp4" loop muted playsinline></video>
 
-  <!-- Audio -->
   <audio id="pocoyoAudio" src="pocoyo.mp3"></audio>
 
   <script>
@@ -210,7 +204,10 @@
 
     let escaped = false;
     let moveCount = 0;
+
+    // ✅ declare ONCE
     let celebrateRainRunning = false;
+    let confettiRainRAF = null;
 
     const messages = [
       "Are you sure? 🥺",
@@ -220,23 +217,16 @@
       "Just say YES already! 💘"
     ];
 
-    /* ---- MORE FLOATING HEARTS (but still light) ---- */
+    /* ---- Floating hearts ---- */
     const heartEmojis = ["💖","💕","💗","💘","❤️","🥰"];
     function spawnHeart() {
       const heart = document.createElement("div");
       heart.className = "floating-heart";
       heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
-
       heart.style.left = (-5 + Math.random() * 110) + "vw";
-
-      const size = 14 + Math.random() * 26;
-      heart.style.fontSize = size + "px";
-
+      heart.style.fontSize = (14 + Math.random() * 26) + "px";
       heart.style.animationDuration = (3.5 + Math.random() * 5.5) + "s";
-
-      const drift = (-30 + Math.random() * 60);
-      heart.style.transform = `translateX(${drift}px)`;
-
+      heart.style.transform = `translateX(${(-30 + Math.random() * 60)}px)`;
       document.body.appendChild(heart);
       setTimeout(() => heart.remove(), 11000);
     }
@@ -246,7 +236,7 @@
       if (Math.random() < 0.35) spawnHeart();
     }, 260);
 
-    /* ---- Sparkle trail ---- */
+    /* ---- Sparkles ---- */
     document.addEventListener("mousemove", (e) => {
       if (Math.random() > 0.55) return;
       const sparkle = document.createElement("div");
@@ -257,7 +247,7 @@
       setTimeout(() => sparkle.remove(), 600);
     });
 
-    /* ---- No button escape + message changes ONLY when it moves ---- */
+    /* ---- No button escape ---- */
     function escapeNoButton() {
       if (!escaped) {
         const rect = noBtn.getBoundingClientRect();
@@ -296,68 +286,61 @@
 
     document.addEventListener("touchstart", escapeNoButton);
 
-    /* ---- Confetti “rain” after YES (subtle, timed) ---- */
-let celebrateRainRunning = false;
-let confettiRainRAF = null;
+    /* ---- Infinite confetti rain ---- */
+    function startConfettiRain() {
+      if (celebrateRainRunning) return;
+      celebrateRainRunning = true;
 
-function startConfettiRain() {
-  if (celebrateRainRunning) return;
-  celebrateRainRunning = true;
+      const frame = () => {
+        confetti({
+          particleCount: 3,
+          spread: 70,
+          startVelocity: 0,
+          gravity: 0.9,
+          ticks: 240,
+          origin: { x: Math.random(), y: -0.1 }
+        });
 
-  const frame = () => {
-    confetti({
-      particleCount: 3,     // keep low so it’s not crazy
-      spread: 70,
-      startVelocity: 0,
-      gravity: 0.9,
-      ticks: 240,
-      origin: { x: Math.random(), y: -0.1 }
-    });
+        confettiRainRAF = requestAnimationFrame(frame);
+      };
 
-    confettiRainRAF = requestAnimationFrame(frame);
-  };
+      frame();
+    }
 
-  frame();
-}
+    function stopConfettiRain() {
+      celebrateRainRunning = false;
+      if (confettiRainRAF) cancelAnimationFrame(confettiRainRAF);
+      confettiRainRAF = null;
+    }
 
-function stopConfettiRain() {
-  celebrateRainRunning = false;
-  if (confettiRainRAF) cancelAnimationFrame(confettiRainRAF);
-  confettiRainRAF = null;
-}
-
-    /* ---- YES click: confetti from button + rain + card message + side videos + audio ---- */
-    yesBtn.addEventListener("click", async () => {
+    /* ---- YES click ---- */
+    yesBtn.addEventListener("click", () => {
       const rect = yesBtn.getBoundingClientRect();
       const x = (rect.left + rect.width / 2) / window.innerWidth;
       const y = (rect.top + rect.height / 2) / window.innerHeight;
 
-      // Burst from the button
-      confetti({
-        particleCount: 140,
-        spread: 85,
-        origin: { x, y }
-      });
+      // Burst from button
+      confetti({ particleCount: 140, spread: 85, origin: { x, y } });
 
-      // Light confetti rain after the burst
-      setTimeout(() => startConfettiRain(), 150);
-      
-      // Hide buttons + note
+      // Start infinite rain
+      setTimeout(startConfettiRain, 150);
+
+      // Hide UI
       yesBtn.style.display = "none";
       noBtn.style.display = "none";
       note.style.display = "none";
 
-      // Show side videos (fade in) and play
+      // Videos
       leftVideo.classList.add("show");
       rightVideo.classList.add("show");
       leftVideo.play().catch(()=>{});
       rightVideo.play().catch(()=>{});
 
-      // Play audio (may require click — this click counts)
+      // Audio (may fail if browser blocks; click usually allows it)
       pocoyoAudio.currentTime = 0;
       pocoyoAudio.play().catch(()=>{});
 
-      // Update card message
+      // Update card text
       setTimeout(() => {
         card.classList.add("celebration");
         emoji.textContent = "💖✨";
