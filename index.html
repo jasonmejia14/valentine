@@ -297,29 +297,34 @@
     document.addEventListener("touchstart", escapeNoButton);
 
     /* ---- Confetti “rain” after YES (subtle, timed) ---- */
-    function confettiRain(ms = 3200) {
-      if (celebrateRainRunning) return;
-      celebrateRainRunning = true;
+let celebrateRainRunning = false;
+let confettiRainRAF = null;
 
-      const end = Date.now() + ms;
+function startConfettiRain() {
+  if (celebrateRainRunning) return;
+  celebrateRainRunning = true;
 
-      (function frame() {
-        confetti({
-          particleCount: 3,
-          spread: 70,
-          startVelocity: 0,
-          gravity: 0.9,
-          ticks: 240,
-          origin: { x: Math.random(), y: -0.1 }
-        });
+  const frame = () => {
+    confetti({
+      particleCount: 3,     // keep low so it’s not crazy
+      spread: 70,
+      startVelocity: 0,
+      gravity: 0.9,
+      ticks: 240,
+      origin: { x: Math.random(), y: -0.1 }
+    });
 
-        if (Date.now() < end) {
-          requestAnimationFrame(frame);
-        } else {
-          celebrateRainRunning = false;
-        }
-      })();
-    }
+    confettiRainRAF = requestAnimationFrame(frame);
+  };
+
+  frame();
+}
+
+function stopConfettiRain() {
+  celebrateRainRunning = false;
+  if (confettiRainRAF) cancelAnimationFrame(confettiRainRAF);
+  confettiRainRAF = null;
+}
 
     /* ---- YES click: confetti from button + rain + card message + side videos + audio ---- */
     yesBtn.addEventListener("click", async () => {
@@ -335,8 +340,8 @@
       });
 
       // Light confetti rain after the burst
-      setTimeout(() => confettiRain(3200), 150);
-
+      setTimeout(() => startConfettiRain(), 150);
+      
       // Hide buttons + note
       yesBtn.style.display = "none";
       noBtn.style.display = "none";
